@@ -1,0 +1,13 @@
+---
+
+- name: Check for te_agent_package_source
+  fail: msg='te_agent_package_source is not defined'
+  when: te_agent_package_source is not defined
+
+- name: Check for te_agent_te_server_host
+  fail: msg='te_agent_te_server_host is not defined'
+  when: te_agent_te_server_host is not defined
+
+- name: Check for te_agent_te_services_passphrase
+  fail: msg='te_agent_te_services_passphrase is not defined'
+  when: te_agent_te_services_passphrase is not defined

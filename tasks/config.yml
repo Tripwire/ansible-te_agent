@@ -1,0 +1,66 @@
+---
+
+- name: Write agent.tags.conf
+  template:
+    src: agent.tags.conf.j2
+    dest: "{{ te_agent_package_install_path }}/data/config/agent.tags.conf"
+  when: te_agent_tags is defined
+
+- name: webserver.http.port
+  lineinfile:
+    path: "{{ te_agent_package_install_path }}/data/config/agent.properties"
+    regexp: '^webserver\.http\.port='
+    line: 'webserver.http.port={{ te_agent_te_server_http_port }}'
+  notify:
+    - Restart agent service
+
+- name: tw.server.host
+  lineinfile:
+    path: "{{ te_agent_package_install_path }}/data/config/agent.properties"
+    regexp: '^tw\.server\.host='
+    line: 'tw.server.host={{ te_agent_te_server_host }}'
+  notify:
+    - Restart agent service
+
+- name: tw.server.port
+  lineinfile:
+    path: "{{ te_agent_package_install_path }}/data/config/agent.properties"
+    regexp: '^tw\.server\.port='
+    line: 'tw.server.port={{ te_agent_te_services_port }}'
+  notify:
+    - Restart agent service
+
+- name: tw.agent.generator.port
+  lineinfile:
+    path: "{{ te_agent_package_install_path }}/data/config/agent.properties"
+    regexp: '^tw\.agent\.generator\.port='
+    line: 'tw.agent.generator.port={{ te_agent_rtm_port }}'
+  notify:
+    - Restart agent service
+    - Restart event generator service
+
+- name: tw.local.port
+  lineinfile:
+    path: "{{ te_agent_package_install_path }}/data/config/agent.properties"
+    regexp: '^tw\.local\.port='
+    line: 'tw.local.port={{ te_agent_local_port }}'
+  notify:
+    - Restart agent service
+
+- name: tw.proxy.host
+  lineinfile:
+    path: "{{ te_agent_package_install_path }}/data/config/agent.properties"
+    regexp: '^tw\.proxy\.host='
+    line: 'tw.proxy.host={{ te_agent_proxy_host }}'
+  when: te_agent_proxy_host is defined
+  notify:
+    - Restart agent service
+
+- name: tw.proxy.port
+  lineinfile:
+    path: "{{ te_agent_package_install_path }}/data/config/agent.properties"
+    regexp: '^tw\.proxy\.port='
+    line: 'tw.proxy.port={{ te_agent_proxy_port }}'
+  when: te_agent_proxy_host is defined
+  notify:
+    - Restart agent service

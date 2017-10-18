@@ -1,0 +1,4 @@
+---
+te_agent_package_name: te_agent
+te_agent_service_name: twdaemon
+te_agent_service_rtm_name: twrtmd

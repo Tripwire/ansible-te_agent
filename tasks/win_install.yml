@@ -1,0 +1,43 @@
+---
+
+- name: Create MSI staging path
+  win_tempfile:
+    state: directory
+    suffix: te_agent
+  register: staging
+
+- name: Stage te_agent.msi
+  win_copy:
+    src: "{{ te_agent_package_source }}"
+    dest: '{{ staging.path }}\te_agent.msi'
+
+- name: Install agent MSI package
+  win_package:
+    path: '{{ staging.path }}\te_agent.msi'
+    product_id: "{{ te_agent_package_name }}"
+    state: "{{ te_agent_package_state }}"
+    creates_path: '{{ te_agent_package_install_path }}\bin\twdaemon.cmd'
+    arguments: >-
+      ACCEPT_EULA=true
+      TE_SERVER_HOSTNAME="{{ te_agent_te_server_host }}"
+      TE_SERVER_PORT="{{ te_agent_te_services_port }}"
+      SERVICES_PASSWORD="{{ te_agent_te_services_passphrase }}"
+      INSTALL_RTM="{{ te_agent_install_rtm }}"
+      INSTALLDIR="{{ te_agent_package_install_path }}"
+      START_AGENT=false
+      {% if te_agent_proxy_host|default('') %}
+      TE_PROXY_HOSTNAME="{{ te_agent_proxy_host }}"
+      TE_PROXY_PORT="{{ te_agent_proxy_port }}"
+      {% endif %}
+      {% if te_agent_install_rtm %}
+      RTMPORT="{{ te_agent_rtm_port }}"
+      {% endif %}
+      {% if te_agent_enable_fips %}
+      INSTALL_FIPS=true
+      TE_SERVER_HTTP_PORT="{{ te_agent_te_server_http_port }}"
+      {% endif %}
+
+- name: Cleanup MSI staging path
+  win_file:
+    path: "{{ staging.path }}"
+    state: absent

@@ -1,0 +1,52 @@
+---
+
+- name: Create staging path
+  tempfile:
+    state: directory
+    suffix: te_agent
+  register: staging
+
+- name: Stage te_agent.bin
+  copy:
+    src: "{{ te_agent_package_source }}"
+    dest: "{{ staging.path }}/te_agent.bin"
+    mode: 0700
+
+- name: Run agent installer .bin
+  command: >-
+    {{ staging.path }}/te_agent.bin --silent --eula accept
+    --server-host "{{ te_agent_te_server_host }}"
+    --server-port "{{ te_agent_te_services_port }}"
+    --passphrase "{{ te_agent_te_services_passphrase }}"
+    --install-rtm "{{ te_agent_install_rtm }}"
+    --install-dir "{{ te_agent_package_install_path }}"
+    {% if te_agent_proxy_host|default('') %}
+    --proxy-host "{{ te_agent_proxy_host }}"
+    --proxy-port "{{ te_agent_proxy_port }}"
+    {% endif %}
+    {% if te_agent_install_rtm %}
+    --rtmport "{{ te_agent_rtm_port }}"
+    {% endif %}
+    {% if te_agent_enable_fips %}
+    --enable-fips
+    --http-port "{{ te_agent_te_server_http_port }}"
+    {% endif %}
+  args:
+    creates: "{{ te_agent_package_install_path }}/bin/twdaemon"
+
+- name: Cleanup staging path
+  file:
+    path: "{{ staging.path }}"
+    state: absent
+
+- name: Create Ansible custom facts directory
+  file:
+    path: /etc/ansible/facts.d
+    state: directory
+    recurse: yes
+
+- name: Write custom fact
+  template:
+    src: te_agent.fact.j2
+    dest: /etc/ansible/facts.d/te_agent.fact
+    mode: 0700

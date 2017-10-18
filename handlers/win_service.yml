@@ -1,0 +1,12 @@
+---
+
+- name: Restart Windows agent service
+  win_service:
+    name: "{{ te_agent_service_name }}"
+    state: restarted
+
+- name: Restart Windows event generator service
+  win_service:
+    name: "{{ te_agent_service_rtm_name }}"
+    state: restarted
+  when: te_agent_install_rtm

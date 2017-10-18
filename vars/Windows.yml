@@ -1,0 +1,4 @@
+---
+te_agent_package_name: '{CBE84CA6-F8E9-4D79-B8CE-CF936013DA82}'
+te_agent_service_name: teagent
+te_agent_service_rtm_name: tesvc

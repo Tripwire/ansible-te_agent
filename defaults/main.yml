@@ -1,0 +1,15 @@
+---
+te_agent_package_state: present
+te_agent_package_install_path: '/usr/local/tripwire/te/agent'
+te_agent_te_services_port: 9898
+te_agent_te_server_http_port: 8080
+te_agent_local_port: 9898
+te_agent_install_rtm: true
+te_agent_proxy_port: 1080
+te_agent_rtm_port: 1169
+te_agent_enable_fips: false
+te_agent_service_state: started
+te_agent_service_enabled: true
+# only makes sense if te_agent_install_rtm = true
+te_agent_service_rtm_state: started
+te_agent_service_rtm_enabled: true

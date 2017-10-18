@@ -1,0 +1,9 @@
+{% for k,v in te_agent_tags.items() %}
+{% if v is string %}
+{{ k }}:{{ v }}
+{% else %}
+{% for l in v %}
+{{ k }}:{{ l }}
+{% endfor %}
+{% endif %}
+{% endfor %}

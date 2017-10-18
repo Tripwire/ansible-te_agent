@@ -1,0 +1,14 @@
+---
+
+- name: Agent Windows service
+  win_service:
+    name: "{{ te_agent_service_name }}"
+    state: "{{ te_agent_service_state }}"
+    start_mode: "{{ te_agent_service_enabled|ternary('auto', 'manual') }}"
+
+- name: Event Generator Windows service
+  win_service:
+    name: "{{ te_agent_service_rtm_name }}"
+    state: "{{ te_agent_service_rtm_state }}"
+    start_mode: "{{ te_agent_service_rtm_enabled|ternary('auto', 'manual') }}"
+  when: te_agent_install_rtm

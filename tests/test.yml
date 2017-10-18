@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  remote_user: root
+  roles:
+    - role: te_agent
+      te_agent_package_source: /mnt/data/te_agent/linux/x86_64/te_agent.bin
+      te_agent_te_server_host: tw-testcon.example.com
+      te_agent_te_services_passphrase: correct horse battery staple
+      te_agent_package_version: 8.5.6
+      te_agent_tags:
+        foo: bar
+        tags2: [taga, tagb]

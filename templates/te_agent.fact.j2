@@ -1,0 +1,10 @@
+#!/bin/env python
+
+import json
+
+with open('{{ te_agent_package_install_path }}/data/version') as f:
+    version = f.read()
+
+print json.dumps({
+    'version': '.'.join(version.split('=')[1].split('.')[:3])
+})

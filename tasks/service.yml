@@ -1,0 +1,19 @@
+---
+
+- name: Agent service state
+  service:
+    name: "{{ te_agent_service_name }}"
+    state: "{{ te_agent_service_state }}"
+
+- name: Agent service enabled
+  service:
+    name: "{{ te_agent_service_name }}"
+    enabled: "{{ te_agent_service_enabled|ternary('yes', 'no') }}"
+  when: ansible_os_family != 'RedHat'
+
+- name: Event Generator service
+  service:
+    name: "{{ te_agent_service_rtm_name }}"
+    state: "{{ te_agent_service_rtm_state }}"
+    enabled: "{{ te_agent_service_rtm_enabled|ternary('yes', 'no') }}"
+  when: te_agent_install_rtm

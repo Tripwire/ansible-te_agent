@@ -1,0 +1,12 @@
+---
+
+- name: Restart agent service
+  service:
+    name: "{{ te_agent_service_name }}"
+    state: restarted
+
+- name: Restart event generator service
+  service:
+    name: "{{ te_agent_service_rtm_name }}"
+    state: restarted
+  when: te_agent_install_rtm

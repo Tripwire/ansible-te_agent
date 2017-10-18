@@ -1,0 +1,6 @@
+---
+
+- name: Uninstall agent
+  command: "{{ te_agent_package_install_path }}/bin/uninstall.sh"
+  args:
+    removes: "{{ te_agent_package_install_path }}/bin/twdaemon"
